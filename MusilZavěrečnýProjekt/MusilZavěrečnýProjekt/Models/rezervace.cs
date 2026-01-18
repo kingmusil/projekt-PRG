@@ -11,7 +11,7 @@ namespace MusilZavěrečnýProjekt.Models
         public int ReservationId { get; set; }
         [Column("uzivatel_id")]
         public int UserId { get; set; }
-        [Column("cislo_stolu")]
+        [Column("stul_id")]
         public int SeatId { get; set; }
         [Column("datum")]
         public DateTime ReservedOn { get; set; }
