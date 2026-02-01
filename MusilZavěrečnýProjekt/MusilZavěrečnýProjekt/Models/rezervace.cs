@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MusilZavěrečnýProjekt.Models
 {
@@ -7,6 +8,7 @@ namespace MusilZavěrečnýProjekt.Models
     [Table("rezervace")]
     public class rezervace
     {
+        [Key]
         [Column("rezervace_id")]
         public int ReservationId { get; set; }
         [Column("uzivatel_id")]
