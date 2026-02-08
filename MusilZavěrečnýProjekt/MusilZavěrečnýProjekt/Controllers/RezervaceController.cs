@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MusilZavěrečnýProjekt.Models;
+using System.Linq;
+using System;
 
 namespace MusilZavěrečnýProjekt.Controllers
 {
@@ -28,16 +30,46 @@ namespace MusilZavěrečnýProjekt.Controllers
         [HttpPost]
         public IActionResult Login(UserViewModel user)
         {
-            User uzivatel = new User();
+            if (!ModelState.IsValid)
+                return View(user);
 
-            uzivatel.Username = user.Username;
-            uzivatel.Email = user.Email;
-            uzivatel.PasswordHash = user.Password;
+            // Najdeme existujícího uživatele podle e-mailu nebo jména
+            var existing = DbContext.users.FirstOrDefault(u => u.Email == user.Email || u.Username == user.Username);
+
+            if (existing != null)
+            {
+                // Ověříme heslo (v produkci používejte hash a bezpečné porovnání)
+                if (existing.PasswordHash == user.Password)
+                {
+                    TempData["Message"] = $"Přihlášen: {existing.Username}";
+                    return RedirectToAction("Index");
+                }
+
+                ModelState.AddModelError(string.Empty, "Nesprávné heslo.");
+                return View(user);
+            }
+
+            // Pokud uživatel neexistuje, vytvoříme nový (pokud nechcete automatickou registraci, změňte sem chování)
+            var uzivatel = new User
+            {
+                Username = user.Username,
+                Email = user.Email,
+                PasswordHash = user.Password // Pozn.: pro produkci hashe
+            };
 
             DbContext.users.Add(uzivatel);
-            DbContext.SaveChanges();
+            try
+            {
+                DbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Chyba při ukládání: " + ex.Message);
+                return View(user);
+            }
 
-            return View("Index");
+            TempData["Message"] = "Účet vytvořen a přihlášen.";
+            return RedirectToAction("Index");
         }
     }
 }
