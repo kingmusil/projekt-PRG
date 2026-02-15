@@ -1,8 +1,25 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content container">
+        <div class="hero-left">
+            <h1 class="hero-title">BO$$ Restaurant</h1>
+            <hr class="hero-rule" />
+            <div class="hero-stars">★ ★ ★</div>
+        </div>
+
+        <nav class="hero-menu">
+            <a class="btn-reservace" asp-controller="Rezervace" asp-action="Index">REZERVACE</a>
+            <ul>
+                <li><a asp-controller="Home" asp-action="Menu">MENU</a></li>
+                <li><a asp-controller="Home" asp-action="About">O RESTAURACI</a></li>
+                <li><a asp-controller="Home" asp-action="Contact">KONTAKT</a></li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+<!-- Note: place your background image at wwwroot/images/hero.jpg -->

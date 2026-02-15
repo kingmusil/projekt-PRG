@@ -1,22 +1,192 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap');
+
+/* Base */
 html {
-  font-size: 14px;
+ font-size:14px;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+@media (min-width:768px) {
+ html {
+ font-size:16px;
+ }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+ box-shadow:0000.1rem rgba(255,255,255,0.12),0000.25rem rgba(37,140,251,0.12);
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+ position: relative;
+ min-height:100%;
 }
 
 body {
-  margin-bottom: 60px;
+ margin-bottom:60px;
+ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ background: transparent;
+ color: #fff;
 }
+
+/* Header across all pages */
+.site-header {
+ background: rgba(20,20,20,0.95); /* dark header different from hero */
+ color: #fff;
+}
+.site-header .navbar-brand {
+ font-weight:700;
+ color: #fff;
+ font-family: 'Playfair Display', serif;
+ font-size:28px;
+}
+
+/* Hero landing styles - full width */
+.hero {
+ position: relative;
+ width:100vw; /* full viewport width */
+ left:50%;
+ right:50%;
+ margin-left: -50vw;
+ margin-right: -50vw;
+ height:100vh;
+ background-image: url('/images/hero.jpg');
+ background-size: cover;
+ background-position: center;
+ color: #fff;
+}
+.hero-overlay {
+ position: absolute;
+ inset:0;
+ background: rgba(0,0,0,0.55);
+}
+.hero-content {
+ position: relative;
+ height:100%;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ max-width:1200px;
+ margin:0 auto;
+}
+.hero-left {
+ margin-left:60px;
+}
+.hero-title {
+ font-family: 'Playfair Display', serif;
+ font-size:64px;
+ letter-spacing:6px;
+ font-weight:400;
+}
+.hero-rule {
+ width:280px;
+ border:0;
+ border-top:2px solid rgba(255,255,255,0.8);
+ margin:12px0;
+}
+.hero-stars {
+ color: #dba84a;
+ margin-top:6px;
+}
+.hero-menu {
+ margin-right:60px;
+ text-align: right;
+}
+
+/* Reservace button: fix padding to be symmetric and slightly larger */
+.btn-reservace {
+ display: inline-block;
+ background: #d93b3b;
+ color: #fff;
+ padding:16px34px; /* symmetric horizontal padding */
+ border-radius:8px;
+ font-weight:700;
+ font-size:18px;
+ text-decoration: none;
+ margin-bottom:20px;
+ box-shadow:06px18px rgba(217,59,59,0.18);
+}
+
+.hero-menu ul {
+ list-style: none;
+ padding:0;
+ margin:0;
+}
+.hero-menu li {
+ margin:18px0;
+}
+.hero-menu a {
+ color: #fff;
+ text-decoration: none;
+ font-size:20px;
+ opacity:0.95;
+}
+
+@media (max-width:768px) {
+ .hero-title { font-size:36px; margin-left:20px }
+ .hero-left { margin-left:20px }
+ .hero-menu { margin-right:20px }
+ .btn-reservace { padding:12px20px; font-size:16px }
+}
+
+/* Auth (login/register) styles */
+.auth-page {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ min-height: calc(100vh -80px);
+ padding:40px16px;
+ background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.75));
+}
+.auth-card {
+ width:100%;
+ max-width:420px;
+ background: rgba(255,255,255,0.04);
+ border:1px solid rgba(255,255,255,0.06);
+ border-radius:12px;
+ padding:28px;
+ box-shadow:010px30px rgba(0,0,0,0.6);
+}
+.auth-card h2 {
+ font-family: 'Playfair Display', serif;
+ margin-bottom:12px;
+}
+.form-group { margin-bottom:14px; }
+.form-control.auth-input {
+ background: rgba(255,255,255,0.06);
+ border:1px solid rgba(255,255,255,0.08);
+ color: #fff;
+ padding:10px12px;
+ border-radius:6px;
+}
+.form-control.auth-input::placeholder { color: rgba(255,255,255,0.6); }
+.btn-auth {
+ display: inline-block;
+ width:100%;
+ background: #d93b3b;
+ color: #fff;
+ padding:12px16px;
+ border-radius:8px;
+ font-weight:700;
+ border: none;
+}
+.btn-auth.secondary {
+ background: transparent;
+ border:1px solid rgba(255,255,255,0.12);
+ color: #fff;
+}
+.auth-footer { text-align: center; margin-top:12px; color: rgba(255,255,255,0.8); }
+
+/* Menu page styles */
+.menu-hero { padding:40px0; background: #111; color: #fff }
+.menu-container { max-width:900px; margin:0 auto; }
+.menu-title { font-family: 'Playfair Display', serif; font-size:40px; margin-bottom:10px }
+.menu-list { display: flex; flex-wrap: wrap; gap:20px }
+.menu-item { background: rgba(255,255,255,0.04); padding:18px; border-radius:8px; flex:1145%; min-width:260px }
+.menu-item h3 { font-family: 'Playfair Display', serif; margin:006px0 }
+.menu-item p { margin:008px0 }
+.menu-price { font-weight:700; color: #d93b3b }
+
+/* About / Contact styles */
+.info-hero { padding:40px0; max-width:900px; margin:20px auto; color: #eee }
+
+/* Small helpers */
+.text-muted-light { color: rgba(255,255,255,0.7); }

@@ -1,9 +1,17 @@
-﻿namespace MusilZavěrečnýProjekt.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MusilZavěrečnýProjekt.Models
 {
-    public class UserViewModel
-    {
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
+ public class UserViewModel
+ {
+ [Required]
+ public string Username { get; set; }
+
+ [Required]
+ [EmailAddress]
+ public string Email { get; set; }
+
+ [Required]
+ public string Password { get; set; }
+ }
 }

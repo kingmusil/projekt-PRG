@@ -1,4 +1,21 @@
 ﻿@{
 }
 
-<h1>Rezervace1</h1>
+<h1>BOSS Restaurant - Rezervace</h1>
+
+<style>
+ .floorplan { display:flex; flex-wrap:wrap; gap:20px; max-width:800px; margin:20px auto; }
+ .table { width:120px; height:80px; background:#f8e7d6; border:2px solid #b58a6f; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:bold; }
+ .table.reserved { background:#f28b82; }
+ .table.available { background:#b7e4c7; }
+</style>
+
+<div class="container">
+ <p>@TempData["Message"]</p>
+ <div class="floorplan">
+ @for (int i =1; i <=12; i++)
+ {
+ <div class="table available">Stůl @i</div>
+ }
+ </div>
+</div>

@@ -14,8 +14,8 @@ namespace MusilZavěrečnýProjekt.Models
         public string Username { get; set; }
         [Column("email")]
         public string Email { get; set; }
-        [Column("heslo_hash")]
-        public string PasswordHash { get; set; }
+        [Column("heslo")]
+        public string Password { get; set; } // Changed to plain password field as requested
     }
 
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MusilZavěrečnýProjekt.Models;
 using System.Linq;
-using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace MusilZavěrečnýProjekt.Controllers
 {
@@ -17,6 +17,12 @@ namespace MusilZavěrečnýProjekt.Controllers
         }
         public IActionResult Index()
         {
+            // Simple check: if not logged in (no TempData flag), redirect to Login
+            if (TempData["LoggedInUser"] == null)
+            {
+                return RedirectToAction("Login");
+            }
+            TempData.Keep("LoggedInUser");
             return View();
 
         }
@@ -28,48 +34,71 @@ namespace MusilZavěrečnýProjekt.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(UserViewModel user)
+        public IActionResult Login(LoginViewModel user)
         {
             if (!ModelState.IsValid)
                 return View(user);
 
-            // Najdeme existujícího uživatele podle e-mailu nebo jména
-            var existing = DbContext.users.FirstOrDefault(u => u.Email == user.Email || u.Username == user.Username);
+            var existing = DbContext.users.FirstOrDefault(u => EF.Property<string>(u, "Email") == user.Email);
 
-            if (existing != null)
+            if (existing == null)
             {
-                // Ověříme heslo (v produkci používejte hash a bezpečné porovnání)
-                if (existing.PasswordHash == user.Password)
-                {
-                    TempData["Message"] = $"Přihlášen: {existing.Username}";
-                    return RedirectToAction("Index");
-                }
-
-                ModelState.AddModelError(string.Empty, "Nesprávné heslo.");
+                ModelState.AddModelError(string.Empty, "Uživatel neexistuje. Zaregistrujte se.");
                 return View(user);
             }
 
-            // Pokud uživatel neexistuje, vytvoříme nový (pokud nechcete automatickou registraci, změňte sem chování)
-            var uzivatel = new User
+            // Plain text password comparison
+            if (existing.Password == user.Password)
+            {
+                TempData["LoggedInUser"] = existing.Username;
+                TempData["Message"] = $"Přihlášen: {existing.Username}";
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError(string.Empty, "Nesprávné heslo.");
+            return View(user);
+        }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Register(UserViewModel user)
+        {
+            if (!ModelState.IsValid)
+                return View(user);
+
+            var existing = DbContext.users.FirstOrDefault(u => EF.Property<string>(u, "Email") == user.Email || EF.Property<string>(u, "Username") == user.Username);
+            if (existing != null)
+            {
+                ModelState.AddModelError(string.Empty, "Uživatel s tímto emailem nebo uživatelským jménem již existuje.");
+                return View(user);
+            }
+
+            var uzivatel = new MusilZavěrečnýProjekt.Models.User
             {
                 Username = user.Username,
                 Email = user.Email,
-                PasswordHash = user.Password // Pozn.: pro produkci hashe
+                Password = user.Password // store plain password as requested
             };
 
             DbContext.users.Add(uzivatel);
-            try
-            {
-                DbContext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "Chyba při ukládání: " + ex.Message);
-                return View(user);
-            }
+            DbContext.SaveChanges();
 
-            TempData["Message"] = "Účet vytvořen a přihlášen.";
+            // Auto-login after registration: set TempData and redirect to reservations
+            TempData["LoggedInUser"] = uzivatel.Username;
+            TempData["Message"] = "Registrace proběhla úspěšně. Vítejte!";
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Logout()
+        {
+            TempData.Remove("LoggedInUser");
+            TempData.Remove("Message");
+            return RedirectToAction("Index", "Home");
         }
     }
 }
